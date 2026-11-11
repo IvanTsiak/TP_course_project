@@ -1,0 +1,44 @@
+program: "begin" stmt "end"
+
+?stmt: assign_stmt
+     | seq_stmt
+     | if_stmt
+     | while_stmt
+     | block_stmt
+     | skip_stmt
+
+assign_stmt: VAR ":=" aexp
+seq_stmt: stmt ";" stmt
+if_stmt: "if" bexp "then" stmt "else" stmt
+while_stmt: "while" bexp "do" stmt
+block_stmt: "begin" stmt "end"
+skip_stmt: "skip"
+
+?aexp: aexp "+" amult -> add
+     | aexp "-" amult -> sub
+     | amult
+
+?amult: amult "*" aatom -> mult
+      | aatom
+
+?aatom: INT -> num
+      | VAR -> var
+      | "(" aexp ")"
+
+?bexp: bexp "or" bor -> or_op
+     | bor
+
+?bor: "not" batom -> neg_op
+    | aexp "=" aexp -> eq
+    | aexp ">" aexp -> gt
+    | "(" bexp ")"
+
+batom: aexp "=" aexp -> eq
+     | aexp ">" aexp -> gt
+     | "(" bexp ")"
+
+VAR: /[a-zA-Z_][a-zA-Z0-9_]*/
+INT: /-?[0-9]+/
+
+%import common.WS
+%ignore WS
