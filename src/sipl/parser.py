@@ -1,6 +1,8 @@
 from pathlib import Path
+
 from lark import Lark, Transformer, v_args
-from lark.exceptions import UnexpectedToken, UnexpectedCharacters
+from lark.exceptions import UnexpectedCharacters, UnexpectedInput, UnexpectedToken
+
 from sipl import ast
 
 GRAMMAR_PATH = Path(__file__).parent.parent.parent / "grammar" / "sipl.lark"
@@ -95,7 +97,5 @@ def parse_sipl(code: str) -> ast.Program:
     except UnexpectedCharacters as e:
         msg = f"Unexpected character '{e.char}'"
         raise SIPLSyntaxError(msg, e.line, e.column) from e
-    except Exception as e:
-        if hasattr(e, 'line') and hasattr(e, 'column'):
-            raise SIPLSyntaxError(str(e).split('\n')[0], getattr(e, 'line'), getattr(e, 'column')) from e
-        raise e
+    except UnexpectedInput as e:
+        raise SIPLSyntaxError(str(e).split("\n")[0], e.line, e.column) from e

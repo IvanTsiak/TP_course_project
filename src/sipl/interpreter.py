@@ -1,23 +1,23 @@
-from typing import Dict, Optional
+
 from sipl import ast
 from sipl.parser import parse_sipl
 
 
 class SIPLRuntimeError(Exception):
-    def __init__(self, message: str, span: Optional[ast.SourceSpan] = None):
+    def __init__(self, message: str, span: ast.SourceSpan | None = None):
         location = f" at line {span.line}, column {span.column}" if span else ""
         super().__init__(f"Runtime Error{location}: {message}")
         self.span = span
 
 
 class UndefinedVariableError(SIPLRuntimeError):
-    def __init__(self, var_name: str, span: Optional[ast.SourceSpan] = None):
+    def __init__(self, var_name: str, span: ast.SourceSpan | None = None):
         super().__init__(f"Variable '{var_name}' is not defined", span)
         self.var_name = var_name
 
 
 class StepLimitExceededError(SIPLRuntimeError):
-    def __init__(self, max_steps: int, span: Optional[ast.SourceSpan] = None):
+    def __init__(self, max_steps: int, span: ast.SourceSpan | None = None):
         super().__init__(f"Execution step limit ({max_steps}) exceeded", span)
         self.max_steps = max_steps
 
@@ -32,19 +32,19 @@ class SIPLInterpreter:
     def execute(
         self,
         program: ast.Program,
-        initial_state: Optional[Dict[str, int]] = None
-    ) -> Dict[str, int]:
+        initial_state: dict[str, int] | None = None
+    ) -> dict[str, int]:
         self.steps = 0
-        state: Dict[str, int] = dict(initial_state) if initial_state else {}
+        state: dict[str, int] = dict(initial_state) if initial_state else {}
         self._eval_stm(program.stmt, state)
         return state
 
-    def _tick(self, span: Optional[ast.SourceSpan]) -> None:
+    def _tick(self, span: ast.SourceSpan | None) -> None:
         self.steps += 1
         if self.steps > self.max_steps:
             raise StepLimitExceededError(self.max_steps, span)
 
-    def _eval_stm(self, stmt: ast.Stm, state: Dict[str, int]) -> None:
+    def _eval_stm(self, stmt: ast.Stm, state: dict[str, int]) -> None:
         self._tick(stmt.span)
 
         if isinstance(stmt, ast.Skip):
@@ -79,7 +79,7 @@ class SIPLInterpreter:
 
         raise SIPLRuntimeError(f"Unknown statement node: {type(stmt).__name__}", stmt.span)
 
-    def _eval_aexp(self, expr: ast.Aexp, state: Dict[str, int]) -> int:
+    def _eval_aexp(self, expr: ast.Aexp, state: dict[str, int]) -> int:
         if isinstance(expr, ast.Num):
             return expr.value
 
@@ -101,7 +101,7 @@ class SIPLInterpreter:
 
         raise SIPLRuntimeError(f"Unknown arithmetic node: {type(expr).__name__}", expr.span)
 
-    def _eval_bexp(self, expr: ast.Bexp, state: Dict[str, int]) -> bool:
+    def _eval_bexp(self, expr: ast.Bexp, state: dict[str, int]) -> bool:
         if isinstance(expr, ast.RelOp):
             left = self._eval_aexp(expr.left, state)
             right = self._eval_aexp(expr.right, state)
@@ -124,9 +124,9 @@ class SIPLInterpreter:
 
 def run_sipl(
     code: str,
-    initial_state: Optional[Dict[str, int]] = None,
+    initial_state: dict[str, int] | None = None,
     max_steps: int = 10_000
-) -> Dict[str, int]:
+) -> dict[str, int]:
     program = parse_sipl(code)
     interpreter = SIPLInterpreter(max_steps=max_steps)
     return interpreter.execute(program, initial_state)

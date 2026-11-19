@@ -1,4 +1,5 @@
 import pytest
+
 from sipl.syntax import parse_sipl
 
 VALID_PROGRAMS = [

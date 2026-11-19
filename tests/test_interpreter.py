@@ -1,11 +1,12 @@
 import pytest
+
 from sipl import (
-    run_sipl,
-    parse_sipl,
     SIPLInterpreter,
     SIPLSyntaxError,
-    UndefinedVariableError,
     StepLimitExceededError,
+    UndefinedVariableError,
+    parse_sipl,
+    run_sipl,
 )
 
 

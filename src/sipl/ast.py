@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+
 
 @dataclass
 class SourceSpan:
@@ -10,7 +10,7 @@ class SourceSpan:
 
 @dataclass
 class ASTNode:
-    span: Optional[SourceSpan]
+    span: SourceSpan | None
 
 class Aexp(ASTNode):
     pass

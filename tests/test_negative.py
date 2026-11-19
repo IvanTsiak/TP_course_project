@@ -1,5 +1,6 @@
 import pytest
 from lark.exceptions import LarkError
+
 from sipl.syntax import parse_sipl
 
 INVALID_PROGRAMS = [

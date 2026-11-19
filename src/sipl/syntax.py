@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from lark import Lark
 
 GRAMMAR_PATH = Path(__file__).parent.parent.parent / "grammar" / "sipl.lark"
