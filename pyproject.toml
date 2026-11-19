@@ -3,8 +3,11 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "TP_course_project"
+name = "TP-course-project"
 version = "0.4.0"
+description = "Toolkit for SImple Programming Language (SIPL)"
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
     "lark>=1.1.0",
 ]
@@ -16,6 +19,7 @@ dev = [
     "ruff>=0.4.0",
     "mypy>=1.10.0",
     "build>=1.2.0",
+    "twine>=5.0.0",
 ]
 
 [project.scripts]
@@ -23,6 +27,9 @@ sipl = "sipl.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+sipl = ["*.lark"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

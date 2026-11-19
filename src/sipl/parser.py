@@ -5,7 +5,7 @@ from lark.exceptions import UnexpectedCharacters, UnexpectedInput, UnexpectedTok
 
 from sipl import ast
 
-GRAMMAR_PATH = Path(__file__).parent.parent.parent / "grammar" / "sipl.lark"
+GRAMMAR_PATH = Path(__file__).parent / "sipl.lark"
 
 
 @v_args(meta=True)
@@ -35,7 +35,6 @@ class SIPLTransformer(Transformer):
     def mult(self, meta, args):
         return ast.ABinOp(span=self._span(meta), op='*', left=args[0], right=args[1])
 
-    # Логічні вирази
     def eq(self, meta, args):
         return ast.RelOp(span=self._span(meta), op='=', left=args[0], right=args[1])
 

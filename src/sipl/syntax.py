@@ -2,7 +2,7 @@ from pathlib import Path
 
 from lark import Lark
 
-GRAMMAR_PATH = Path(__file__).parent.parent.parent / "grammar" / "sipl.lark"
+GRAMMAR_PATH = Path(__file__).parent / "sipl.lark"
 
 def get_parser(parser_type: str = "earley") -> Lark:
     with open(GRAMMAR_PATH, "r", encoding="utf-8") as f:
