@@ -33,7 +33,7 @@ skip_stmt: "skip"
     | aexp ">" aexp -> gt
     | "(" bexp ")"
 
-batom: aexp "=" aexp -> eq
+?batom: aexp "=" aexp -> eq
      | aexp ">" aexp -> gt
      | "(" bexp ")"
 
