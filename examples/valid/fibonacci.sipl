@@ -1,0 +1,13 @@
+begin
+    A := 0;
+    B := 1;
+    I := 0;
+    while N > I do
+    begin
+        NEXT := A + B;
+        A := B;
+        B := NEXT;
+        I := I + 1
+    end;
+    R := A
+end

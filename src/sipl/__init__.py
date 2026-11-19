@@ -29,6 +29,15 @@ from .interpreter import (
     trace_sipl_json,
 )
 from .parser import SIPLSyntaxError, parse_sipl
+from .visualization import (
+    ParseTreeNode,
+    build_parse_tree,
+    format_parse_tree_dot,
+    format_parse_tree_json,
+    format_parse_tree_svg,
+    format_parse_tree_text,
+    visualize_parse_tree,
+)
 
 __all__ = [
     "ABinOp",
@@ -41,6 +50,7 @@ __all__ = [
     "LogicOp",
     "NotOp",
     "Num",
+    "ParseTreeNode",
     "Program",
     "RelOp",
     "SIPLInterpreter",
@@ -55,8 +65,14 @@ __all__ = [
     "UndefinedVariableError",
     "Var",
     "While",
+    "build_parse_tree",
+    "format_parse_tree_dot",
+    "format_parse_tree_json",
+    "format_parse_tree_svg",
+    "format_parse_tree_text",
     "parse_sipl",
     "run_sipl",
     "trace_sipl",
     "trace_sipl_json",
+    "visualize_parse_tree",
 ]

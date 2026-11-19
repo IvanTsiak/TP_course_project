@@ -1,0 +1,9 @@
+begin
+    T := N;
+    while T > 1 do
+        T := T - 2;
+    if T = 0 then
+        R := 1
+    else
+        R := 0
+end

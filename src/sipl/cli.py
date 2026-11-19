@@ -6,10 +6,11 @@ from typing import Any
 
 from sipl.interpreter import SIPLInterpreter, SIPLRuntimeError
 from sipl.parser import SIPLSyntaxError, parse_sipl
+from sipl.visualization import visualize_parse_tree
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="sipl", description="SIPL execution & trace CLI")
+    parser = argparse.ArgumentParser(prog="sipl", description="SIPL execution & visualization CLI")
     parser.add_argument("file", type=Path, help="Path to .sipl source file")
     parser.add_argument(
         "--state",
@@ -28,11 +29,27 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Output only the JSON array of trace events",
     )
+    parser.add_argument(
+        "--parse-tree",
+        choices=["text", "json", "dot", "svg"],
+        default=None,
+        help="Export Parse Tree in the specified format instead of executing",
+    )
     args = parser.parse_args(argv)
 
     if not args.file.exists():
         print(f"Error: file '{args.file}' not found", file=sys.stderr)
         return 2
+
+    code = args.file.read_text(encoding="utf-8")
+
+    if args.parse_tree is not None:
+        try:
+            print(visualize_parse_tree(code, fmt=args.parse_tree))
+            return 0
+        except SIPLSyntaxError as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
 
     try:
         initial_state = json.loads(args.state)
@@ -44,7 +61,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Invalid --state argument: {exc}", file=sys.stderr)
         return 2
 
-    code = args.file.read_text(encoding="utf-8")
     interpreter = SIPLInterpreter(max_steps=args.max_steps)
 
     try:
