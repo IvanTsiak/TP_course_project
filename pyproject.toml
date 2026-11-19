@@ -18,6 +18,9 @@ dev = [
     "build>=1.2.0",
 ]
 
+[project.scripts]
+sipl = "sipl.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

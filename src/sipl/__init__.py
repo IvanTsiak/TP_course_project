@@ -22,8 +22,11 @@ from .interpreter import (
     SIPLInterpreter,
     SIPLRuntimeError,
     StepLimitExceededError,
+    TraceEvent,
     UndefinedVariableError,
     run_sipl,
+    trace_sipl,
+    trace_sipl_json,
 )
 from .parser import SIPLSyntaxError, parse_sipl
 
@@ -48,9 +51,12 @@ __all__ = [
     "SourceSpan",
     "StepLimitExceededError",
     "Stm",
+    "TraceEvent",
     "UndefinedVariableError",
     "Var",
     "While",
     "parse_sipl",
     "run_sipl",
+    "trace_sipl",
+    "trace_sipl_json",
 ]
